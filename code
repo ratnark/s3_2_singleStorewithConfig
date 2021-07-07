@@ -8,7 +8,7 @@ ip_address varchar(50),
 CREATE or REPLACE PIPELINE `parquePipeline`
 AS LOAD DATA S3 'pipelinedemomemsql'
 CONFIG '{"region": "us-east-1"}'
-CREDENTIALS '{"aws_access_key_id": "AKIA6EL6NBDLF23L5MVP", "aws_secret_access_key": "bM1gFPcssZBn1CUWgG1o1h6aJ1cLST9i7hsyiEAI"}'
+CREDENTIALS '{"aws_access_key_id": "", "aws_secret_access_key": ""}'
 INTO TABLE `operation`
 FORMAT PARQUET
    (`t`.`registration_dttm` <- `registration_dttm`,
