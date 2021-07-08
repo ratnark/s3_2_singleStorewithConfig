@@ -1,0 +1,39 @@
+--CREATE DATABASE IF NOT EXISTS parqueDemoDB;
+USE parqueDemoDB;
+drop  table operation
+
+CREATE TABLE operation(registration_dttm datetime, id int, first_name varchar(50), last_name varchar(50), email varchar(50), gender varchar(50), 
+ip_address varchar(50),
+ cc bigint, country varchar(50), birthdate date, salary float, title varchar(50), comments varchar(50));
+
+CREATE or REPLACE PIPELINE `parquePipeline`
+AS LOAD DATA S3 'pipelinedemomemsql'
+CONFIG '{"region": "us-east-1"}'
+CREDENTIALS '{"aws_access_key_id": "'", "aws_secret_access_key": "\"}'
+batch_interval 10
+INTO TABLE `operation`
+FORMAT PARQUET
+   (`t`.`registration_dttm` <- `registration_dttm`,
+    `t`.`id` <- `id`,
+    `t`.`first_name` <- `first_name`,
+    `t`.`last_name` <- `last_name`,
+    `t`.`email` <- `email`,
+    `t`.`gender` <- `gender`,
+    `t`.`ip_address` <- `ip_address`,
+    `t`.`cc` <- `cc`,
+    `t`.`country` <- `country`,
+    `t`.`birthdate` <- `birthdate`,
+    `t`.`salary` <- `salary`,
+    `t`.`title` <- `title`,
+    `t`.`comments` <- `comments`
+);
+
+drop pipeline parquePipeline
+
+START PIPELINE parquePipeline FOREGROUND;
+
+TEST PIPELINE parquePipeline;
+
+select count(1) from operation
+
+truncate table operation
